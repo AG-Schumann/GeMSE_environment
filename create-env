@@ -68,19 +68,19 @@ cd /tmp
 wget -nv http://cern.ch/geant4-data/releases/geant4.${geant4_version}.tar.gz
 tar xzf geant4.${geant4_version}.tar.gz
 cd geant4.${geant4_version}
-#mkdir build && cd $_
-#cmake -DCMAKE_INSTALL_PREFIX=${target_dir}/geant4 \
-#      -DGEANT4_INSTALL_DATA=ON  \
-#      -DGEANT4_USE_OPENGL_X11=OFF \
-#      -DGEANT4_BUILD_MULTITHREADED=OFF \
-#      -DGEANT4_USE_QT=ON \
-#      -DGEANT4_USE_GDML=OFF \
-#      -DGEANT4_USE_RAYTRACER_X11=OFF \
-#      -DGEANT4_USE_XM=OFF \
-#      -DGEANT4_USE_HDF5=OFF \
-#      /tmp/geant4.${geant4_version}
-#make -j4
-#make install
+mkdir build && cd $_
+cmake -DCMAKE_INSTALL_PREFIX=${target_dir}/geant4 \
+      -DGEANT4_INSTALL_DATA=ON  \
+      -DGEANT4_USE_OPENGL_X11=OFF \
+      -DGEANT4_BUILD_MULTITHREADED=OFF \
+      -DGEANT4_USE_QT=ON \
+      -DGEANT4_USE_GDML=OFF \
+      -DGEANT4_USE_RAYTRACER_X11=OFF \
+      -DGEANT4_USE_XM=OFF \
+      -DGEANT4_USE_HDF5=OFF \
+      /tmp/geant4.${geant4_version}
+make -j4
+make install
 cd /tmp
 rm -rf geant4.${geant4_version}.tar.gz geant4.${geant4_version}
 
@@ -132,8 +132,8 @@ export CPATH="${target_dir}/bat/bat-install/include:$CPATH"
 export PKG_CONFIG_PATH="${target_dir}/bat/bat-install/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # G4
-#source ${target_dir}/geant4/bin/geant4.sh
-#source ${target_dir}/geant4/share/Geant4-*/geant4make/geant4make.sh
+source ${target_dir}/geant4/bin/geant4.sh
+source ${target_dir}/geant4/share/Geant4-*/geant4make/geant4make.sh
 
 START_DIR=\$PWD
 cd \$START_DIR
@@ -144,4 +144,3 @@ source ${target_dir}/setup.sh
 
 
 announce "All done!"
-
