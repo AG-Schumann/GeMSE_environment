@@ -28,7 +28,7 @@ function announce {
     echo
 }
 
-env_name=GeMSE_container
+env_name=gemse_env
 mkdir $target_dir
 
 announce "Installing Miniconda"
