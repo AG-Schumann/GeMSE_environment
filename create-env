@@ -68,7 +68,7 @@ wget -nv http://cern.ch/geant4-data/releases/geant4.${geant4_version}.tar.gz
 tar xzf geant4.${geant4_version}.tar.gz
 cd geant4.${geant4_version}
 mkdir build && cd $_
-cmake -DCMAKE_INSTALL_PREFIX=$target_dir/geant4 \
+cmake -DCMAKE_INSTALL_PREFIX=${target_dir}/geant4 \
       -DGEANT4_INSTALL_DATA=ON  \
       -DGEANT4_USE_OPENGL_X11=OFF \
       -DGEANT4_BUILD_MULTITHREADED=OFF \
@@ -77,7 +77,7 @@ cmake -DCMAKE_INSTALL_PREFIX=$target_dir/geant4 \
       -DGEANT4_USE_RAYTRACER_X11=OFF \
       -DGEANT4_USE_XM=OFF \
       -DGEANT4_USE_HDF5=OFF \
-      nux-ubuntu20-x86_64-gcc9.3.tar.gz/tmp/geant4.${geant4_version}
+      /tmp/geant4.${geant4_version}
 make -j4
 make install
 cd /tmp
@@ -113,30 +113,34 @@ make -j4
 make install
 
 
-# hack to make thisroot.sh work in the minimal /bin/sh used
-# when starting the Singularity container
-#cp /tmp/thisroot.sh /opt/geant4/bin/thisroot.sh
+announce "Adding setup.sh" # For easy sourcing
+cat >${target_dir}/setup.sh <<EOF
+#!/bin/bash
 
-# this will be sourced when entering the container
-#cat > /gemse_container.sh <<EOF
-#!/bin/sh
+source ${target_dir}/anaconda/bin/activate ${env_name}
+# Prepend to LD_LIBRARY_PATH - non-Python tools might be using it
+export LD_LIBRARY_PATH=\$CONDA_PREFIX/lib64:\$CONDA_PREFIX/lib\${LD_LIBRARY_PATH:+:}\${LD_LIBRARY_PATH}
 
-#if [ "x\$DEBUG" != "x" ]; then
-#    echo
-#    env
-#    echo
-#fi
-#
-#START_DIR=\$PWD
-#cd ${target_dir}/bin
-#. ./thisroot.sh
-#. ./geant4.sh
-#cd ${target_dir}/share/Geant4-*/geant4make/
-#. ./geant4make.sh
-#cd \$START_DIR
-#
-#EOF
+# ROOT
+source ${target_dir}/root/bin/thisroot.sh
+
+# BAT
+export PATH="${target_dir}/bat/bat-install/bin:$PATH"
+export LD_LIBRARY_PATH="${target_dir}/bat/bat-install/lib:$LD_LIBRARY_PATH"
+export CPATH="${target_dir}/bat/bat-install/include:$CPATH"
+export PKG_CONFIG_PATH="${target_dir}/bat/bat-install/lib/pkgconfig:$PKG_CONFIG_PATH"
+
+# G4
+source ${target_dir}/geant4/bin/geant4.sh
+source ${target_dir}/geant4/share/Geant4-*/geant4make/geant4make.sh
+
+START_DIR=\$PWD
+cd \$START_DIR
+EOF
+
+
+. ${target_dir}/setup.sh
+
 
 announce "All done!"
-
 
