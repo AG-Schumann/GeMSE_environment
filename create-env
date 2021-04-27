@@ -122,6 +122,9 @@ source ${target_dir}/anaconda/bin/activate ${env_name}
 # Prepend to LD_LIBRARY_PATH - non-Python tools might be using it
 # export LD_LIBRARY_PATH=\$CONDA_PREFIX/lib64:\$CONDA_PREFIX/lib\${LD_LIBRARY_PATH:+:}\${LD_LIBRARY_PATH}
 
+# assimp
+export LD_LIBRARY_PATH="/opt/GeMSE/assimp/bin:$PATH"
+
 # ROOT
 source ${target_dir}/root/bin/thisroot.sh
 
