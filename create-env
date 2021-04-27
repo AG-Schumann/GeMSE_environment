@@ -45,12 +45,13 @@ $target_dir/anaconda/bin/conda env create -f conda_xnt_tmp.yml
 
 announce "Cleaning Anaconda environment"
 $target_dir/anaconda/bin/conda clean --all --yes
-rm -f ${target_dir}/anaconda/pkgs/rope-0.11.0-py37_0/info/LICENSE.txt
+
+
 announce "Activating Anaconda environment"
 source $target_dir/anaconda/bin/activate ${env_name}
 
 
-export PATH=$target_dir/bin:$PATH
+#export PATH=$target_dir/bin:$PATH
 
 
 announce "Installing ROOT"
@@ -67,19 +68,19 @@ cd /tmp
 wget -nv http://cern.ch/geant4-data/releases/geant4.${geant4_version}.tar.gz
 tar xzf geant4.${geant4_version}.tar.gz
 cd geant4.${geant4_version}
-mkdir build && cd $_
-cmake -DCMAKE_INSTALL_PREFIX=${target_dir}/geant4 \
-      -DGEANT4_INSTALL_DATA=ON  \
-      -DGEANT4_USE_OPENGL_X11=OFF \
-      -DGEANT4_BUILD_MULTITHREADED=OFF \
-      -DGEANT4_USE_QT=ON \
-      -DGEANT4_USE_GDML=OFF \
-      -DGEANT4_USE_RAYTRACER_X11=OFF \
-      -DGEANT4_USE_XM=OFF \
-      -DGEANT4_USE_HDF5=OFF \
-      /tmp/geant4.${geant4_version}
-make -j4
-make install
+#mkdir build && cd $_
+#cmake -DCMAKE_INSTALL_PREFIX=${target_dir}/geant4 \
+#      -DGEANT4_INSTALL_DATA=ON  \
+#      -DGEANT4_USE_OPENGL_X11=OFF \
+#      -DGEANT4_BUILD_MULTITHREADED=OFF \
+#      -DGEANT4_USE_QT=ON \
+#      -DGEANT4_USE_GDML=OFF \
+#      -DGEANT4_USE_RAYTRACER_X11=OFF \
+#      -DGEANT4_USE_XM=OFF \
+#      -DGEANT4_USE_HDF5=OFF \
+#      /tmp/geant4.${geant4_version}
+#make -j4
+#make install
 cd /tmp
 rm -rf geant4.${geant4_version}.tar.gz geant4.${geant4_version}
 
@@ -119,7 +120,7 @@ cat >${target_dir}/setup.sh <<EOF
 
 source ${target_dir}/anaconda/bin/activate ${env_name}
 # Prepend to LD_LIBRARY_PATH - non-Python tools might be using it
-export LD_LIBRARY_PATH=\$CONDA_PREFIX/lib64:\$CONDA_PREFIX/lib\${LD_LIBRARY_PATH:+:}\${LD_LIBRARY_PATH}
+# export LD_LIBRARY_PATH=\$CONDA_PREFIX/lib64:\$CONDA_PREFIX/lib\${LD_LIBRARY_PATH:+:}\${LD_LIBRARY_PATH}
 
 # ROOT
 source ${target_dir}/root/bin/thisroot.sh
@@ -131,15 +132,15 @@ export CPATH="${target_dir}/bat/bat-install/include:$CPATH"
 export PKG_CONFIG_PATH="${target_dir}/bat/bat-install/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # G4
-source ${target_dir}/geant4/bin/geant4.sh
-source ${target_dir}/geant4/share/Geant4-*/geant4make/geant4make.sh
+#source ${target_dir}/geant4/bin/geant4.sh
+#source ${target_dir}/geant4/share/Geant4-*/geant4make/geant4make.sh
 
 START_DIR=\$PWD
 cd \$START_DIR
 EOF
 
 
-. ${target_dir}/setup.sh
+source ${target_dir}/setup.sh
 
 
 announce "All done!"
