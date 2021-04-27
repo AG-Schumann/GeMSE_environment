@@ -1,0 +1,28 @@
+awkward==1.0.2
+bokeh
+cython
+datetime
+influxdb
+jupyter
+jupyter-resource-usage  # Memory viewer for notebooks
+jupyterlab
+llvmlite  # numba depencency
+matplotlib
+memory_profiler
+multihist
+nbsphinx
+numba
+numpy
+pandas
+pymongo
+scikit-learn
+scipy
+seaborn
+snakeviz
+sphinx
+sshtunnel
+tables  # pytables, necessary for pandas hdf5 i/o
+tensorflow
+tensorflow_probability
+tqdm
+uproot==4.0.1

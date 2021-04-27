@@ -1,0 +1,143 @@
+#!/bin/bash
+
+##########################
+# versions in this release
+root_version=6.22.00
+geant4_version=10.07.p01
+bat_version=v0.9.4.1
+##########################
+
+set -e
+
+target_dir=$1
+
+if [ "X$target_dir" = "X" ]; then
+    echo "Please specify a target directory. Example: ./create-env /tmp/myenv" >&1
+    exit 1
+fi
+
+if [ -e $target_dir ]; then
+    echo "Target directory already exists - refusing to work on it" >&1
+    exit 1
+fi
+
+function announce {
+    echo
+    echo "#######################################################################################"
+    echo "## $1       ("`date -u`")"
+    echo
+}
+
+env_name=GeMSE_container
+
+
+announce "Installing Miniconda"
+wget -nv -O conda_setup.sh https://repo.anaconda.com/miniconda/Miniconda3-py38_4.9.2-Linux-x86_64.sh
+bash conda_setup.sh -b -p $target_dir/anaconda
+rm -f conda_setup.sh
+export PKG_CONFIG_PATH=${target_dir}/anaconda/envs/${env_name}/lib64/pkgconfig:/usr/lib64/pkgconfig:/usr/share/pkgconfig
+
+
+announce "Installing Anaconda environment"
+echo -e "name: ${env_name}\n$(cat conda_settings.yml | grep -v '^name:.*')" > conda_xnt_tmp.yml         # Add name to the env yml
+$target_dir/anaconda/bin/conda env create -f conda_xnt_tmp.yml
+
+
+announce "Cleaning Anaconda environment"
+$target_dir/anaconda/bin/conda clean --all --yes
+rm -f ${target_dir}/anaconda/pkgs/rope-0.11.0-py37_0/info/LICENSE.txt
+announce "Activating Anaconda environment"
+source $target_dir/anaconda/bin/activate ${env_name}
+
+
+export PATH=$target_dir/bin:$PATH
+
+
+announce "Installing ROOT"
+cd /tmp
+wget -nv https://root.cern/download/root_v${root_version}.Linux-centos7-x86_64-gcc4.8.tar.gz
+tar xzf root_v${root_version}.Linux-centos7-x86_64-gcc4.8.tar.gz -C $target_dir
+rm -rf root_v${root_version}.Linux-centos7-x86_64-gcc4.8.tar.gz
+
+
+announce "Installing Geant4"
+set -v
+mkdir $target_dir/geant4
+cd /tmp
+wget -nv http://cern.ch/geant4-data/releases/geant4.${geant4_version}.tar.gz
+tar xzf geant4.${geant4_version}.tar.gz
+cd geant4.${geant4_version}
+mkdir build && cd $_
+cmake -DCMAKE_INSTALL_PREFIX=$target_dir/geant4 \
+      -DGEANT4_INSTALL_DATA=ON  \
+      -DGEANT4_USE_OPENGL_X11=OFF \
+      -DGEANT4_BUILD_MULTITHREADED=OFF \
+      -DGEANT4_USE_QT=ON \
+      -DGEANT4_USE_GDML=OFF \
+      -DGEANT4_USE_RAYTRACER_X11=OFF \
+      -DGEANT4_USE_XM=OFF \
+      -DGEANT4_USE_HDF5=OFF \
+      /tmp/geant4.${geant4_version}
+make -j4
+make install
+cd /tmp
+rm -rf geant4.${geant4_version}.tar.gz geant4.${geant4_version}
+
+
+announce "Installing assimp"
+cd $target_dir
+git clone https://github.com/AG-Schumann/assimp.git # Our own AG-Schumann fork
+cd assimp
+cmake CMakeLists.txt && make -j4
+
+
+announce "Installing tetgen"
+cd $target_dir
+git clone https://github.com/christopherpoole/tetgen.git
+cd tetgen
+gcc -fPIC -c predicates.cxx
+gcc -fPIC -c tetgen.cxx
+gcc -shared -o tetlib.so tetgen.o predicates.o
+make -j4
+
+
+announce "Installing BAT"
+mkdir ${target_dir}/bat && cd $_
+git clone https://github.com/bat/bat.git -b ${bat_version}
+mkdir bat-install
+cd bat
+./autogen.sh
+source ${target_dir}/root/bin/thisroot.sh # BAT installer needs to find ROOT
+./configure --prefix=${target_dir}/bat/bat-install/
+make -j4
+make install
+
+
+# hack to make thisroot.sh work in the minimal /bin/sh used
+# when starting the Singularity container
+#cp /tmp/thisroot.sh /opt/geant4/bin/thisroot.sh
+
+# this will be sourced when entering the container
+#cat > /gemse_container.sh <<EOF
+#!/bin/sh
+
+#if [ "x\$XENON_DEBUG" != "x" ]; then
+#    echo
+#    env
+#    echo
+#fi
+#
+#if [ \$XENON_SOURCE -eq 1 ]; then
+#    START_DIR=\$PWD
+#    cd ${target_dir}/bin
+#    . ./thisroot.sh
+#    . ./geant4.sh
+#    cd ${target_dir}/share/Geant4-*/geant4make/
+#    . ./geant4make.sh
+#    cd \$START_DIR
+#fi
+#EOF
+
+announce "All done!"
+
+
