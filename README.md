@@ -1,2 +1,7 @@
 # GeMSE_environment
-Software environment for GeMSE analysis and simulations
+
+Docker software environment for GeMSE analysis and simulations.
+
+## Generate Docker container
+
+## Convert container into a Singularity image
