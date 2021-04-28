@@ -126,10 +126,10 @@ source ${target_dir}/anaconda/bin/activate ${env_name}
 source ${target_dir}/root/bin/thisroot.sh
 
 # BAT
-#export PATH="${target_dir}/bat/bat-install/bin:$PATH"
-#export LD_LIBRARY_PATH="${target_dir}/bat/bat-install/lib:$LD_LIBRARY_PATH"
-#export CPATH="${target_dir}/bat/bat-install/include:$CPATH"
-#export PKG_CONFIG_PATH="${target_dir}/bat/bat-install/lib/pkgconfig:$PKG_CONFIG_PATH"
+export PATH="${target_dir}/bat/bat-install/bin:$PATH"
+export LD_LIBRARY_PATH="${target_dir}/bat/bat-install/lib:$LD_LIBRARY_PATH"
+export CPATH="${target_dir}/bat/bat-install/include:$CPATH"
+export PKG_CONFIG_PATH="${target_dir}/bat/bat-install/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 START_DIR=\$PWD
 cd \$START_DIR
