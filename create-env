@@ -159,7 +159,7 @@ announce "Adding zzz-50-gemse.sh"
 # SINGULARITYENV_... vars
 mkdir -p /.singularity.d/env
 cat > /.singularity.d/env/zzz-50-gemse.sh <<EOF
-#!/bin/sh
+#!/bin/bash
 source ${target_dir}/setup.sh
 EOF
 
