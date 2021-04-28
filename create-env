@@ -149,7 +149,7 @@ source ${target_dir}/root/bin/thisroot.sh
 # G4
 source ${target_dir}/geant4/bin/geant4.sh
 source ${target_dir}/geant4/share/Geant4-*/geant4make/geant4make.sh
-export G4WORKDIR=${PWD}
+export G4WORKDIR=\${PWD}
 EOF
 
 
