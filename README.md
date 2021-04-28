@@ -23,7 +23,7 @@ docker build -t <CONTAINER_NAME>:<TAG>
 
 ## Convert container into a Singularity image
 
-This works only for containers already uploaded in the [DockerHub](https://hub.docker.com/):
+This works only for containers already uploaded in the [DockerHub](https://hub.docker.com/).
 
 [Install Singularity](https://sylabs.io/guides/3.3/user-guide/installation.html) and run
 
