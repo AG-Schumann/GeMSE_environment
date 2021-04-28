@@ -122,28 +122,46 @@ source ${target_dir}/anaconda/bin/activate ${env_name}
 # Prepend to LD_LIBRARY_PATH - non-Python tools might be using it
 # export LD_LIBRARY_PATH=\$CONDA_PREFIX/lib64:\$CONDA_PREFIX/lib\${LD_LIBRARY_PATH:+:}\${LD_LIBRARY_PATH}
 
-# assimp
-export LD_LIBRARY_PATH="${target_dir}/assimp/bin:$LD_LIBRARY_PATH"
-
 # ROOT
 source ${target_dir}/root/bin/thisroot.sh
 
 # BAT
-export PATH="${target_dir}/bat/bat-install/bin:$PATH"
-export LD_LIBRARY_PATH="${target_dir}/bat/bat-install/lib:$LD_LIBRARY_PATH"
-export CPATH="${target_dir}/bat/bat-install/include:$CPATH"
-export PKG_CONFIG_PATH="${target_dir}/bat/bat-install/lib/pkgconfig:$PKG_CONFIG_PATH"
-
-# G4
-source ${target_dir}/geant4/bin/geant4.sh
-source ${target_dir}/geant4/share/Geant4-*/geant4make/geant4make.sh
+#export PATH="${target_dir}/bat/bat-install/bin:$PATH"
+#export LD_LIBRARY_PATH="${target_dir}/bat/bat-install/lib:$LD_LIBRARY_PATH"
+#export CPATH="${target_dir}/bat/bat-install/include:$CPATH"
+#export PKG_CONFIG_PATH="${target_dir}/bat/bat-install/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 START_DIR=\$PWD
 cd \$START_DIR
 EOF
 
 
+announce "Adding setup_sims.sh" # For easy sourcing
+cat >${target_dir}/setup_sims.sh <<EOF
+#!/bin/bash
+
+# assimp
+export LD_LIBRARY_PATH="${target_dir}/assimp/bin:$LD_LIBRARY_PATH"
+
+# ROOT
+source ${target_dir}/root/bin/thisroot.sh
+
+# G4
+source ${target_dir}/geant4/bin/geant4.sh
+source ${target_dir}/geant4/share/Geant4-*/geant4make/geant4make.sh
+export G4WORKDIR=${PWD}
+EOF
+
+
+announce "Adding zzz-50-gemse.sh"
+# This will be sourced when entering the container, but
+# should be sourced last in order to pick up for example
+# SINGULARITYENV_... vars
+mkdir -p /.singularity.d/env
+cat > /.singularity.d/env/zzz-50-gemse.sh <<EOF
+#!/bin/sh
 source ${target_dir}/setup.sh
+EOF
 
 
 announce "All done!"
