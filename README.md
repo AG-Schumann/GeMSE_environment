@@ -18,8 +18,10 @@ If you want to build this container locally, [install Docker](https://docs.docke
 ```
 git clone https://github.com/AG-Schumann/GeMSE_environment.git
 cd GeMSE_environment
-docker build -t <CONTAINER_NAME>:<TAG>
+docker build -t <CONTAINER_NAME> .
 ```
+
+where `<CONTAINER_NAME>` can optionally be `<CONTAINER_NAME>:<TAG>` (otherwise a default tag is assigned that can afterwards be changed). 
 
 ## Convert container into a Singularity image
 
@@ -28,6 +30,11 @@ This works only for containers already uploaded in the [DockerHub](https://hub.d
 [Install Singularity](https://sylabs.io/guides/3.3/user-guide/installation.html) and run
 
 ```
-singularity build <SINGULARITY_IMAGE_NAME>:<TAG>.simg docker://<ORGANIZATION>/<CONTAINER_NAME>:<TAG>
+singularity build <SINGULARITY_IMAGE_NAME>.simg docker://<ORGANIZATION>/<CONTAINER_NAME>:<TAG>
 ```
 
+To load this image, just execute:
+```
+singularity shell SINGULARITY_IMAGE_NAME>.simg
+```
+and enjoy GeMSE analysis.
