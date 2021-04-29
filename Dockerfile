@@ -36,7 +36,8 @@ RUN DEBIAN_FRONTEND='noninteractive' apt-get install -y git \
                     libtinfo5 \
                     qt5-default \
                     vim \
-                    autoconf
+                    autoconf \
+                    bumpversion
 
 ADD create-env conda_settings.yml requirements.txt /tmp/
 
