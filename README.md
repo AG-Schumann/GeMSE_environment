@@ -35,6 +35,6 @@ singularity build <SINGULARITY_IMAGE_NAME>.simg docker://<ORGANIZATION>/<CONTAIN
 
 To load this image, just execute:
 ```
-singularity shell SINGULARITY_IMAGE_NAME>.simg
+singularity shell <SINGULARITY_IMAGE_NAME>.simg
 ```
 and enjoy GeMSE analysis.
