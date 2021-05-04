@@ -25,7 +25,7 @@ where `<CONTAINER_NAME>` can optionally be `<CONTAINER_NAME>:<TAG>` (otherwise a
 
 ## Convert container into a Singularity image
 
-This works only for containers already uploaded in the [DockerHub](https://hub.docker.com/).
+This works only for containers already uploaded in the [DockerHub](https://hub.docker.com/), for the moment under [Diego's profile](https://hub.docker.com/u/ramirezdiego).
 
 [Install Singularity](https://sylabs.io/guides/3.3/user-guide/installation.html) and run
 
