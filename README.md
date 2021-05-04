@@ -11,7 +11,7 @@ Among other libraries and packages, it includes:
 
 ## Generate Docker container
 
-There is an [automatic workflow](https://github.com/AG-Schumann/GeMSE_environment/tree/master/.github/workflows) in charge of building the container and uploading it to the [DockerHub](https://hub.docker.com/), after each commit to master branch.
+There is an [automatic workflow](https://github.com/AG-Schumann/GeMSE_environment/tree/master/.github/workflows) in charge of building the container and uploading it to the [DockerHub](https://hub.docker.com/) after each commit to master branch. For the moment under [Diego's profile](https://hub.docker.com/u/ramirezdiego).
 
 If you want to build this container locally, [install Docker](https://docs.docker.com/engine/install/) and run
 
@@ -25,7 +25,7 @@ where `<CONTAINER_NAME>` can optionally be `<CONTAINER_NAME>:<TAG>` (otherwise a
 
 ## Convert container into a Singularity image
 
-This works only for containers already uploaded in the [DockerHub](https://hub.docker.com/), for the moment under [Diego's profile](https://hub.docker.com/u/ramirezdiego).
+This works only for containers already uploaded in the [DockerHub](https://hub.docker.com/).
 
 [Install Singularity](https://sylabs.io/guides/3.3/user-guide/installation.html) and run
 
