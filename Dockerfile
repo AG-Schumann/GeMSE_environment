@@ -37,7 +37,8 @@ RUN DEBIAN_FRONTEND='noninteractive' apt-get install -y git \
                     qt5-default \
                     vim \
                     autoconf \
-                    bumpversion
+                    bumpversion \
+                    rsync grsync
 
 ADD create-env conda_settings.yml requirements.txt /tmp/
 
