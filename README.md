@@ -33,7 +33,14 @@ This works only for containers already uploaded in the [DockerHub](https://hub.d
 singularity build <SINGULARITY_IMAGE_NAME>.simg docker://<ORGANIZATION>/<CONTAINER_NAME>:<TAG>
 ```
 
-To load this image, just execute:
+Singularity uses a temporary directory to build the squashfs filesystem, and this temp space needs to be large enough to hold the entire resulting Singularity image. By default this happens in `/tmp`. If errors related to the insufficient build space arise, the argument `--tmpdir` serves to reassign this temporary directory.
+
+An example command:
+```
+singularity build --tmpdir ~/Desktop/ gemse_env.simg docker://ramirezdiego/gemse_env:latest
+```
+
+To load the built image, just execute:
 ```
 singularity shell <SINGULARITY_IMAGE_NAME>.simg
 ```
