@@ -13,6 +13,7 @@ RUN DEBIAN_FRONTEND='noninteractive' apt-get install -y git \
                     gcc \
                     binutils \
                     libx11-dev \
+                    libxmu-dev \
                     libxpm-dev \
                     libxft-dev \
                     libxext-dev \
