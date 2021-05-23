@@ -14,7 +14,6 @@ RUN DEBIAN_FRONTEND='noninteractive' apt-get install -y git \
                     binutils \
                     libx11-dev \
                     libxmu-dev \
-                    libXi-devel \
                     libglu1-mesa-dev \
                     freeglut3-dev \
                     mesa-common-dev \
